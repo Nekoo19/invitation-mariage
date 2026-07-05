@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invitation Mariage - Othmane & Rahma</title>
+  <style>
+    :root {
+      --env: #c89b96;
+      --env-dark: #a97974;
+      --env-light: #d8b7b2;
+      --paper: #fffdf8;
+      --green: #314d3d;
+      --gold: #c5a05a;
+      --burgundy: #7b1930;
+      --ink: #2d2b27;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        linear-gradient(rgba(49, 77, 61, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(49, 77, 61, 0.035) 1px, transparent 1px),
+        radial-gradient(circle at 50% 18%, #fffaf1 0 13rem, transparent 30rem),
+        linear-gradient(180deg, #f3f1e9, #dfded5);
+      background-size: 18px 18px, 18px 18px, auto, auto;
+    }
+
+    .stage {
+      width: min(100vw, 860px);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      perspective: 1600px;
+    }
+
+    .invitation {
+      position: relative;
+      width: min(92vw, 680px);
+      height: min(92vh, 790px);
+      display: grid;
+      place-items: center;
+    }
+
+    .hint {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      z-index: 20;
+      transform: translateX(-50%);
+      margin: 0;
+      color: #6f5a57;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: opacity 0.35s ease;
+    }
+
+    .invitation.is-open .hint {
+      opacity: 0;
+    }
+
+    .card {
+      position: absolute;
+      bottom: 88px;
+      z-index: 3;
+      width: min(76vw, 370px);
+      aspect-ratio: 0.68 / 1;
+      padding: clamp(16px, 3vw, 26px);
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      overflow: hidden;
+      opacity: 0;
+      border: 1px solid rgba(49, 77, 61, 0.13);
+      background: var(--paper);
+      box-shadow: 0 20px 35px rgba(45, 43, 39, 0.18);
+      transform: translateY(116px) scale(0.72) rotate(-2deg);
+      transition:
+        opacity 0.2s ease 0.35s,
+        transform 1s cubic-bezier(.18, .9, .22, 1) 1.05s;
+    }
+
+    .invitation.is-open .card {
+      opacity: 1;
+      transform: translateY(-160px) scale(1) rotate(0deg);
+    }
+
+    .ornament,
+    .bottom-ornament {
+      width: clamp(58px, 12vw, 92px);
+      color: var(--green);
+      justify-self: center;
+    }
+
+    .welcome {
+      margin: 2px 0 6px;
+      color: #a9a9a2;
+      text-align: center;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      font-size: clamp(18px, 4vw, 30px);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      line-height: 1.32;
+      text-transform: uppercase;
+    }
+
+    .script {
+      margin: 0;
+      color: #373530;
+      text-align: center;
+      font-family: "Brush Script MT", "Segoe Script", cursive;
+      font-size: clamp(35px, 8vw, 66px);
+      font-weight: 400;
+      line-height: 0.95;
+    }
+
+    .names {
+      margin: 6px 0 0;
+      color: #4d4a43;
+      text-align: center;
+      font-size: clamp(25px, 5.7vw, 48px);
+      font-weight: 400;
+      line-height: 1.04;
+    }
+
+    .middle {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 43% 57%;
+      align-items: end;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .groom {
+      align-self: end;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 8px 8px rgba(45, 43, 39, 0.12));
+    }
+
+    .details {
+      align-self: center;
+      text-align: center;
+    }
+
+    .month,
+    .year {
+      margin: 0;
+      color: #22211f;
+      font-size: clamp(17px, 3.7vw, 29px);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .date-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 7px;
+      margin: 7px 0 9px;
+    }
+
+    .date-row span {
+      color: #605d56;
+      font-family: Arial, sans-serif;
+      font-size: clamp(10px, 2vw, 15px);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .day {
+      position: relative;
+      padding: 0 8px;
+      color: #1f1e1c;
+      font-size: clamp(44px, 10vw, 74px);
+      line-height: 1;
+    }
+
+    .day::before,
+    .day::after {
+      content: "";
+      position: absolute;
+      top: 10%;
+      bottom: 8%;
+      width: 1px;
+      background: #aaa79f;
+    }
+
+    .day::before {
+      left: 0;
+    }
+
+    .day::after {
+      right: 0;
+    }
+
+    .date-soon {
+      margin: 10px 0 0;
+      color: var(--green);
+      font-family: Arial, sans-serif;
+      font-size: clamp(11px, 2vw, 14px);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .envelope-scene {
+      position: absolute;
+      bottom: 110px;
+      z-index: 10;
+      width: min(92vw, 650px);
+      aspect-ratio: 1.72 / 1;
+      transform-style: preserve-3d;
+      transition:
+        transform 0.85s cubic-bezier(.2, .75, .2, 1),
+        z-index 0s linear 1.35s;
+      filter: drop-shadow(0 28px 24px rgba(45, 43, 39, 0.2));
+    }
+
+    .invitation.is-open .envelope-scene {
+      z-index: 2;
+      transform: rotateY(180deg) translateY(42px) scale(0.98);
+    }
+
+    .envelope-button {
+      position: absolute;
+      inset: 0;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      background: transparent;
+      transform-style: preserve-3d;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .envelope-button:focus-visible {
+      outline: 3px solid rgba(123, 25, 48, 0.55);
+      outline-offset: 10px;
+      border-radius: 8px;
+    }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 5px;
+      backface-visibility: hidden;
+      background:
+        radial-gradient(circle at 18% 17%, rgba(255, 255, 255, 0.28), transparent 13rem),
+        radial-gradient(circle at 80% 87%, rgba(90, 45, 45, 0.17), transparent 17rem),
+        repeating-linear-gradient(118deg, rgba(255, 255, 255, 0.09) 0 2px, transparent 2px 8px),
+        var(--env);
+      box-shadow: inset 0 0 0 1px rgba(90, 45, 45, 0.14);
+    }
+
+    .face.back-side {
+      transform: rotateY(180deg);
+    }
+
+    .front-left,
+    .front-right,
+    .front-bottom,
+    .front-top,
+    .back-left,
+    .back-right,
+    .back-bottom,
+    .back-pocket,
+    .open-flap {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.18), transparent 13rem),
+        repeating-linear-gradient(118deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 8px),
+        var(--env);
+    }
+
+    .front-left {
+      clip-path: polygon(0 0, 52% 50%, 0 100%);
+      opacity: 0.72;
+    }
+
+    .front-right {
+      clip-path: polygon(100% 0, 48% 50%, 100% 100%);
+      opacity: 0.72;
+    }
+
+    .front-bottom {
+      clip-path: polygon(0 100%, 50% 49%, 100% 100%);
+      background-color: var(--env-dark);
+      opacity: 0.42;
+    }
+
+    .front-top {
+      clip-path: polygon(0 0, 50% 61%, 100% 0);
+      opacity: 0.32;
+    }
+
+    .back-left {
+      clip-path: polygon(0 40%, 50% 73%, 0 100%);
+      opacity: 0.58;
+    }
+
+    .back-right {
+      clip-path: polygon(100% 40%, 50% 73%, 100% 100%);
+      opacity: 0.58;
+    }
+
+    .back-bottom {
+      clip-path: polygon(0 100%, 50% 51%, 100% 100%);
+      background-color: var(--env-dark);
+      opacity: 0.42;
+    }
+
+    .back-pocket {
+      clip-path: polygon(0 100%, 0 40%, 50% 73%, 100% 40%, 100% 100%);
+      z-index: 3;
+      box-shadow: inset 0 -20px 35px rgba(90, 45, 45, 0.11);
+    }
+
+    .open-flap {
+      z-index: 4;
+      clip-path: polygon(0 0, 100% 0, 50% 68%);
+      transform-origin: top center;
+      transition: transform 0.72s cubic-bezier(.2, .75, .2, 1) 0.78s;
+    }
+
+    .invitation.is-open .open-flap {
+      transform: rotateX(178deg);
+    }
+
+    .label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 5;
+      transform: translate(-50%, -50%);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: clamp(20px, 3.5vw, 31px);
+      font-style: italic;
+      letter-spacing: 0.06em;
+      text-shadow: 0 1px 2px rgba(85, 48, 48, 0.24);
+    }
+
+    .stamp {
+      position: absolute;
+      right: 7%;
+      top: 10%;
+      z-index: 6;
+      width: clamp(72px, 14vw, 112px);
+      aspect-ratio: 1.4 / 1;
+      display: grid;
+      place-items: center;
+      border: 3px dotted rgba(255, 255, 255, 0.88);
+      color: #5d4644;
+      background: rgba(255, 253, 248, 0.36);
+      font-family: Arial, sans-serif;
+      font-size: clamp(12px, 2vw, 16px);
+      letter-spacing: 0.12em;
+    }
+
+    .postmark {
+      position: absolute;
+      right: 21%;
+      top: 13%;
+      z-index: 5;
+      width: clamp(78px, 13vw, 104px);
+      aspect-ratio: 1;
+      border: 2px solid rgba(105, 69, 67, 0.28);
+      border-radius: 50%;
+    }
+
+    .seal {
+      position: absolute;
+      left: 50%;
+      top: 61%;
+      z-index: 8;
+      width: clamp(62px, 12vw, 90px);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #7b4e15;
+      font-size: clamp(25px, 5vw, 39px);
+      font-style: italic;
+      transform: translate(-50%, -50%);
+      background:
+        radial-gradient(circle at 35% 26%, #ffe7a5 0 12%, #d8a249 36%, #98641f 73%, #f2d081 100%);
+      box-shadow:
+        inset 0 2px 5px rgba(255, 255, 255, 0.55),
+        inset 0 -5px 10px rgba(89, 54, 18, 0.3),
+        0 9px 15px rgba(45, 43, 39, 0.25);
+      transition: opacity 0.25s ease 0.6s, transform 0.25s ease 0.6s;
+    }
+
+    .invitation.is-open .seal {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    @media (max-width: 620px) {
+      body {
+        overflow-y: auto;
+      }
+
+      .stage {
+        min-height: 780px;
+        padding: 8px;
+      }
+
+      .invitation {
+        height: 760px;
+      }
+
+      .envelope-scene {
+        bottom: 150px;
+        width: 96vw;
+      }
+
+      .card {
+        bottom: 130px;
+        width: min(82vw, 355px);
+      }
+
+      .invitation.is-open .card {
+        transform: translateY(-175px) scale(1) rotate(0deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <section class="invitation" id="invitation" aria-label="Invitation de mariage interactive">
+      <p class="hint">Clique sur l'enveloppe</p>
+
+      <article class="card" aria-label="Carte d'invitation">
+        <svg class="ornament" viewBox="0 0 120 120" aria-hidden="true">
+          <path d="M60 8 77 25 60 42 43 25Z" fill="none" stroke="currentColor" stroke-width="5"/>
+          <path d="M60 78 77 95 60 112 43 95Z" fill="none" stroke="currentColor" stroke-width="5"/>
+          <path d="M25 43 42 60 25 77 8 60Z" fill="none" stroke="currentColor" stroke-width="5"/>
+          <path d="M95 43 112 60 95 77 78 60Z" fill="none" stroke="currentColor" stroke-width="5"/>
+          <path d="M60 27 93 60 60 93 27 60Z" fill="none" stroke="currentColor" stroke-width="4"/>
+          <path d="M48 48h24v24H48z" fill="none" stroke="currentColor" stroke-width="3"/>
+          <path d="M55 55h10v10H55z" fill="currentColor"/>
+        </svg>
+
+        <p class="welcome">Bienvenue<br>Marhbabikoum</p>
+        <p class="script">Au mariage de</p>
+        <h1 class="names">Othmane<br>&amp; Rahma</h1>
+
+        <div class="middle">
+          <svg class="groom" viewBox="0 0 210 360" role="img" aria-label="Illustration élégante d'un homme en tenue traditionnelle bordeaux et dorée">
+            <path d="M67 138c10 19 78 19 88 0l10 58H57Z" fill="#faf7ef"/>
+            <path d="M67 142c-27 31-43 92-48 205h48c3-72 13-126 31-166Z" fill="#7b1930"/>
+            <path d="M153 142c27 31 43 92 48 205h-48c-3-72-13-126-31-166Z" fill="#7b1930"/>
+            <path d="M72 146c10 57 11 125 5 201h67c-8-79-6-146 5-201-21 11-56 11-77 0Z" fill="#fffdf8"/>
+            <path d="M76 147c8 56 8 128-4 200M144 147c-8 56-8 128 4 200" fill="none" stroke="#d4b566" stroke-width="7" stroke-linecap="round"/>
+            <path d="M84 148c7 49 7 119 0 193M136 148c-7 49-7 119 0 193" fill="none" stroke="#ecd99c" stroke-width="2.5" stroke-dasharray="1 6" stroke-linecap="round"/>
+            <path d="M88 151c14 7 30 7 44 0" fill="none" stroke="#caa85c" stroke-width="5" stroke-linecap="round"/>
+            <path d="M94 166v174M126 166v174" fill="none" stroke="#d8d1bd" stroke-width="3"/>
+            <path d="M99 176h22M98 190h24M98 204h24M99 218h22M100 232h20M101 246h18" fill="none" stroke="#d9d2c2" stroke-width="2"/>
+            <path d="M58 202c-13 33-19 78-20 141h30c2-47 9-88 20-121Z" fill="#8d233b" opacity=".46"/>
+            <path d="M162 202c13 33 19 78 20 141h-30c-2-47-9-88-20-121Z" fill="#8d233b" opacity=".46"/>
+            <path d="M41 252c5 20 17 33 35 41l6-31c-17-5-29-16-37-31Z" fill="#fffdf8"/>
+            <path d="M179 252c-5 20-17 33-35 41l-6-31c17-5 29-16 37-31Z" fill="#fffdf8"/>
+            <path d="M76 292c-12 8-24 8-36 0M144 292c12 8 24 8 36 0" fill="none" stroke="#d4b566" stroke-width="3"/>
+            <path d="M78 348h63" stroke="#d8d1bd" stroke-width="4" stroke-linecap="round"/>
+            <path d="M55 348h49v10H51c-13 0-11-10 4-10ZM116 348h49c15 0 17 10 4 10h-53Z" fill="#f4f3ef"/>
+            <path d="M110 32c28 0 47 20 47 51 0 34-18 62-47 62S63 117 63 83c0-31 19-51 47-51Z" fill="#d89a75"/>
+            <path d="M65 82c6-34 25-52 54-50 28 2 44 22 41 56-15-12-32-18-52-18-17 0-31 4-43 12Z" fill="#27231f"/>
+            <path d="M76 102c12 22 24 31 38 31 13 0 24-10 34-31-5 31-19 49-38 49-20 0-31-18-34-49Z" fill="#c78565"/>
+            <path d="M81 51c13-15 45-17 60 0" fill="none" stroke="#caa85c" stroke-width="8" stroke-linecap="round"/>
+            <path d="M82 48c13 8 45 9 58 0" fill="none" stroke="#f0d88e" stroke-width="3" stroke-linecap="round"/>
+            <path d="M100 86c-4 9-7 20-6 31M121 86c5 9 8 20 7 31" fill="none" stroke="#bc765a" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+            <path d="M89 80c9 5 31 5 42 0" fill="none" stroke="#1f1c19" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+
+          <div class="details">
+            <p class="month">Décembre</p>
+            <div class="date-row">
+              <span>Jour</span>
+              <strong class="day">?</strong>
+              <span>18h30</span>
+            </div>
+            <p class="year">2026</p>
+            <p class="date-soon">Date à venir</p>
+          </div>
+        </div>
+
+        <svg class="bottom-ornament" viewBox="0 0 120 120" aria-hidden="true">
+          <path d="M60 10 110 60 60 110 10 60Z" fill="none" stroke="currentColor" stroke-width="5"/>
+          <path d="M60 28 92 60 60 92 28 60Z" fill="none" stroke="currentColor" stroke-width="4"/>
+          <path d="M45 45h30v30H45z" fill="none" stroke="currentColor" stroke-width="3"/>
+          <path d="M53 53h14v14H53z" fill="currentColor"/>
+        </svg>
+      </article>
+
+      <div class="envelope-scene">
+        <button class="envelope-button" id="envelope" type="button" aria-label="Ouvrir l'enveloppe">
+          <span class="face front-side" aria-hidden="true">
+            <span class="front-left"></span>
+            <span class="front-right"></span>
+            <span class="front-bottom"></span>
+            <span class="front-top"></span>
+            <span class="label">Invitation</span>
+            <span class="postmark"></span>
+            <span class="stamp">2026</span>
+            <span class="seal">R</span>
+          </span>
+          <span class="face back-side" aria-hidden="true">
+            <span class="open-flap"></span>
+            <span class="back-left"></span>
+            <span class="back-right"></span>
+            <span class="back-bottom"></span>
+            <span class="back-pocket"></span>
+          </span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const invitation = document.querySelector("#invitation");
+    const envelope = document.querySelector("#envelope");
+
+    function setOpen(isOpen) {
+      invitation.classList.toggle("is-open", isOpen);
+      envelope.setAttribute("aria-label", isOpen ? "Refermer l'enveloppe" : "Ouvrir l'enveloppe");
+    }
+
+    envelope.addEventListener("click", () => {
+      setOpen(!invitation.classList.contains("is-open"));
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    });
+  </script>
+</body>
+</html>
